@@ -57,12 +57,13 @@ def dep_model(age):
 
 
 
-    print('\nThis method was based on the transfer-failure rate of a straight line difference between expected and observed transfer-failure model: ')
+    print('\nThis method was based on the transfer-failure rate of a straight line difference between expected and observed transfer-failure model: \nThe depreciated value is: ')
     #arguments passed in from function above. Dummy value 0.05 for 'real f
-    print((real_cost*failure_rates(index, 0.05, df)))
+
+    print(("$") + str((real_cost*failure_rates(index, 0.05, df))))
 
     print('\nThis method was based on the U.S dollar currency value of equipment with a straight line depreciation model: \nThe depreciated value after ' + str(age) + " years is: ")
-    return real_cost - (annual_dep * age)
+    return '$' + str(real_cost - (annual_dep * age))
 
 
 
