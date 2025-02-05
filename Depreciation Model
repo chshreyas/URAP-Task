@@ -23,7 +23,7 @@ def dep_model(age):
     #takes user input to get information from the csv file about the specific equipment that is in the context of the desired situation
     weapon = input("What weapon would you like to use? ")
     #reading the csv file
-    df = pd.read_csv(r"C:\Users\chshr\Downloads\US weapons provided to Ukraine.csv")
+    df = pd.read_csv(r"US weapons provided to Ukraine.csv")
     index = df[df['Security assistance'] == weapon].index[0]
     #taking data from the csv file and
     cost_list = df[" Total cost estimate "].tolist()
