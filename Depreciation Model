@@ -1,0 +1,106 @@
+
+import pandas as pd
+
+
+
+#Categories with self-made useful life estimates. These estimates were selected from table 25-2 in the pdf attached based on the information given
+categories_assets = {
+    'Air Defense' : 25,
+    'Fires' : 20,
+    'Ground Maneuver':15,
+    'Aircraft':25,
+    'Anti-armor': 15,
+    'Maritime': 25,
+    'Other Capabilities': 10
+
+}
+
+
+
+
+#depreciation function
+def dep_model(age):
+    #takes user input to get information from the csv file about the specific equipment that is in the context of the desired situation
+    weapon = input("What weapon would you like to use? ")
+    #reading the csv file
+    df = pd.read_csv(r"C:\Users\chshr\Downloads\US weapons provided to Ukraine.csv")
+    index = df[df['Security assistance'] == weapon].index[0]
+    #taking data from the csv file and
+    cost_list = df[" Total cost estimate "].tolist()
+    Cost_list = str(cost_list[index])
+    true_cost = (Cost_list.replace("$", "").replace(",", "").replace(",", ""))
+    real_cost = (float(true_cost))
+
+    categories_assets = {
+        'Air defense': 25,
+        'Fires': 20,
+        'Ground Maneuver': 15,
+        'Aircraft and Unmanned Aerial Systems': 25,
+        'Anti-armor and Small Arms': 15,
+        'Maritime': 25,
+        'Other capabilities': 10
+
+    }
+
+    #finding the category of the weapon referenced
+    useful_life = df.loc[index, 'Category']
+
+    useful_list = []
+    useful_list.append(useful_life)
+
+    #getting the useful life associated with the category of the weapon referenced
+    category = categories_assets.get(useful_list[0])
+
+    #With all the value, we get the annual depreciation rate
+    annual_dep = (real_cost/category)
+
+
+
+
+    print('\nThis method was based on the transfer-failure rate of a straight line difference between expected and observed transfer-failure model: ')
+    #arguments passed in from function above. Dummy value 0.05 for 'real f
+    print((real_cost*failure_rates(index, 0.05, df)))
+
+    print('\nThis method was based on the U.S dollar currency value of equipment with a straight line depreciation model: \nThe depreciated value after ' + str(age) + " years is: ")
+    return real_cost - (annual_dep * age)
+
+
+
+
+
+def failure_rates(index, real_failure, df):
+
+    tran_list = df["Number Provided"].tolist()
+    Tran_list = str(tran_list[index])
+    true_tran = (Tran_list.replace("$", "").replace(",", "").replace(",", ""))
+    real_tran = (float(true_tran))
+
+    # since estimated failure rates are not known --> let's say our estimated failure rate is 10%
+    expected_failure = 0.1
+
+    #formula to calculate the scaling factor for the failure rate
+    fail_factor = ((expected_failure*real_tran) - (real_failure*real_tran))/((expected_failure*real_tran))
+
+    #observed rate can't exceed the estimated rate, so the factor will just be 0.
+    if fail_factor < 0:
+        return 0
+
+    return fail_factor
+
+
+
+
+
+#Final usage of the functions
+print(dep_model(10))
+
+
+
+
+
+
+
+
+
+
+
